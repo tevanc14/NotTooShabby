@@ -1,0 +1,22 @@
+name: not_too_shabby
+description: A new Flutter project.
+version: 0.0.1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  cupertino_icons: ^0.1.2
+  flutter:
+    sdk: flutter
+  flutter_youtube: ^1.1.4
+  url_launcher: ^4.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/
+  uses-material-design: true
