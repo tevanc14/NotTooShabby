@@ -27,7 +27,7 @@ class Info extends StatelessWidget {
           child: Column(
             children: <Widget>[
               _header(
-                'What is this app?',
+                'What is this?',
                 textTheme,
               ),
               RichText(

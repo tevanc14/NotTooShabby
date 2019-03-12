@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube/flutter_youtube.dart';
+
 import 'package:not_too_shabby/info.dart';
+import 'package:not_too_shabby/storage_interactions.dart';
 
 class RandomVideoPlayer extends StatefulWidget {
   RandomVideoPlayer({
@@ -20,6 +21,8 @@ class RandomVideoPlayer extends StatefulWidget {
 class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   @override
   Widget build(BuildContext context) {
+    Storage storage = Storage(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -39,7 +42,9 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FloatingActionButton(
-              onPressed: _randomVideo,
+              onPressed: () {
+                _randomVideo(storage);
+              },
               tooltip: 'Play random video',
               child: Icon(
                 Icons.play_arrow,
@@ -51,17 +56,15 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     );
   }
 
-  void _randomVideo() async {
-    // TODO: Serialize this properly
-    // TODO: Probably pull this from cloud storage, cache for a day or something
-    final String data =
-        await DefaultAssetBundle.of(context).loadString('assets/videos.json');
-    final jsonResult = json.decode(data);
+  void _randomVideo(Storage storage) async {
+    final List<VideoId> videoIds = await storage.localStorageVideoIds;
+    // 3/11.23:49 - 1382
+    print(videoIds.length);
 
     final random = new Random();
-    final randomVideoObject = jsonResult[random.nextInt(jsonResult.length)];
-    final randomVideoId = randomVideoObject['snippet']['resourceId']['videoId'];
-    final String youtubeApiKey = await _youtubeApiKey();
+    final String randomVideoId =
+        videoIds[random.nextInt(videoIds.length)].value;
+    final String youtubeApiKey = await storage.youtubeApiKey;
 
     FlutterYoutube.playYoutubeVideoById(
       apiKey: youtubeApiKey,
@@ -69,17 +72,6 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
       autoPlay: true,
       fullScreen: true,
     );
-  }
-
-  Future<String> _youtubeApiKey() async {
-    final Map<String, dynamic> json = await _loadJson('secrets.json');
-    return YoutubeApiKey.fromJson(json).value;
-  }
-
-  Future<Map<String, dynamic>> _loadJson(String filename) async {
-    final String data =
-        await DefaultAssetBundle.of(context).loadString('assets/$filename');
-    return json.decode(data);
   }
 
   void _toInfoScreen() {
@@ -90,15 +82,4 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
       ),
     );
   }
-}
-
-class YoutubeApiKey {
-  final String value;
-
-  YoutubeApiKey({
-    this.value,
-  });
-
-  YoutubeApiKey.fromJson(Map<String, dynamic> json)
-      : value = json['youtubeApiKey'];
 }
