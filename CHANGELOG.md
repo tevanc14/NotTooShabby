@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1] - 2019-03-17
+
+Changed
+
+- YouTube API key (and removed from source control)
+- Removed debugging statements
+
 ## [0.1.0] - 2019-03-11
 
 Added
@@ -13,4 +20,3 @@ Added
 
 - Working video randomizer
 - About screen
-- Changelog

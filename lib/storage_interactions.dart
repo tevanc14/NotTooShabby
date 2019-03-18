@@ -24,10 +24,8 @@ class Storage {
     final bool shouldInvalidateCache =
         await _shouldInvalidateCache(cacheTimerFile);
     if (!cacheTimerFileExists || shouldInvalidateCache) {
-      print('go fetch ids');
       _retrieveVideoIds();
     }
-    print('use cached ids');
   }
 
   Future<List<VideoId>> get localStorageVideoIds async {

@@ -30,35 +30,9 @@ class Info extends StatelessWidget {
                 'What is this?',
                 textTheme,
               ),
-              RichText(
-                text: TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: 'This application plays a random ',
-                      style: aboutTextStyle,
-                    ),
-                    _LinkTextSpan(
-                      style: linkTextStyle,
-                      text: 'Not Too Shabby',
-                      url: 'https://www.youtube.com/playlist?'
-                          'list=PLRmITxmMBnX-a_FuL36egMUk2b6OcxnDa',
-                    ),
-                    TextSpan(
-                      text: ' video created by the ',
-                      style: aboutTextStyle,
-                    ),
-                    _LinkTextSpan(
-                      style: linkTextStyle,
-                      text: 'kisscactus',
-                      url: 'https://www.youtube.com/user/kisscactus',
-                    ),
-                    TextSpan(
-                      text: ' channel on YouTube. Simply press the play button '
-                          'and a random video will be selected and played.',
-                      style: aboutTextStyle,
-                    ),
-                  ],
-                ),
+              _whatIsThisText(
+                aboutTextStyle,
+                linkTextStyle,
               ),
             ],
           ),
@@ -78,6 +52,42 @@ class Info extends StatelessWidget {
       child: Text(
         text,
         style: textTheme.display1,
+      ),
+    );
+  }
+
+  Widget _whatIsThisText(
+    TextStyle aboutTextStyle,
+    TextStyle linkTextStyle,
+  ) {
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: 'This application plays a random ',
+            style: aboutTextStyle,
+          ),
+          _LinkTextSpan(
+            style: linkTextStyle,
+            text: 'Not Too Shabby',
+            url: 'https://www.youtube.com/playlist?'
+                'list=PLRmITxmMBnX-a_FuL36egMUk2b6OcxnDa',
+          ),
+          TextSpan(
+            text: ' video created by the ',
+            style: aboutTextStyle,
+          ),
+          _LinkTextSpan(
+            style: linkTextStyle,
+            text: 'kisscactus',
+            url: 'https://www.youtube.com/user/kisscactus',
+          ),
+          TextSpan(
+            text: ' channel on YouTube. Simply press the play button '
+                'and a random video will be selected and played. Enjoy!',
+            style: aboutTextStyle,
+          ),
+        ],
       ),
     );
   }

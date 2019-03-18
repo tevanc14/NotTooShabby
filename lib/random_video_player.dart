@@ -58,7 +58,6 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
 
   void _randomVideo(Storage storage) async {
     final List<VideoId> videoIds = await storage.localStorageVideoIds;
-    // 3/11.23:49 - 1382
     print(videoIds.length);
 
     final random = new Random();
