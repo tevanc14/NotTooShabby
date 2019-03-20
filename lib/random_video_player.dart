@@ -22,6 +22,7 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   @override
   Widget build(BuildContext context) {
     Storage storage = Storage(context);
+    final double _buttonSize = 250.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -33,7 +34,9 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
             icon: Icon(
               Icons.info,
             ),
-            onPressed: _toInfoScreen,
+            onPressed: () {
+              _toInfoScreen();
+            },
           ),
         ],
       ),
@@ -41,13 +44,18 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FloatingActionButton(
-              onPressed: () {
-                _randomVideo(storage);
-              },
-              tooltip: 'Play random video',
-              child: Icon(
-                Icons.play_arrow,
+            SizedBox(
+              height: _buttonSize,
+              width: _buttonSize,
+              child: FloatingActionButton(
+                onPressed: () {
+                  _randomVideo(storage);
+                },
+                tooltip: 'Play random video',
+                child: Icon(
+                  Icons.play_arrow,
+                  size: _buttonSize / 2,
+                ),
               ),
             ),
           ],
@@ -58,11 +66,8 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
 
   void _randomVideo(Storage storage) async {
     final List<VideoId> videoIds = await storage.localStorageVideoIds;
-    print(videoIds.length);
-
-    final random = new Random();
     final String randomVideoId =
-        videoIds[random.nextInt(videoIds.length)].value;
+        videoIds[Random().nextInt(videoIds.length)].value;
     final String youtubeApiKey = await storage.youtubeApiKey;
 
     FlutterYoutube.playYoutubeVideoById(

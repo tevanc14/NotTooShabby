@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2] - 2019-03-19
+
+Changed
+
+- Enlarged play button
+- App display names
+- Useful README
+
 ## [0.1.1] - 2019-03-17
 
 Changed

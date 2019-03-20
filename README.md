@@ -1,16 +1,15 @@
-# not_too_shabby
+# Not Too Shabby
 
-A new Flutter project.
+## Application Description
 
-## Getting Started
+Plays a random video from the "Not Too Shabby" YouTube playlist by kisscactus
 
-This project is a starting point for a Flutter application.
+## How does it work
 
-A few resources to get you started if this is your first Flutter project:
+### Backend
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+There is a Google Cloud Function that is triggered by a Cloud Pub/Sub message which is sent once a day by a Cloud Scheduler. This function uses the YouTube data API to gather a list of video ids from the YouTube playlist. A file containing these ids is then pushed to a Cloud Storage bucket.
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+### Frontend
+
+The app pulls down and caches the aforementioned file of video ids. Once this file is loaded, a random id is selected and played.

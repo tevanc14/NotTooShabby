@@ -13,6 +13,7 @@ class Storage {
   final String _secretsFileName = 'secrets.json';
 
   BuildContext _context;
+  List<VideoId> videoIds;
 
   Storage(BuildContext context) {
     this._context = context;
@@ -29,7 +30,6 @@ class Storage {
   }
 
   Future<List<VideoId>> get localStorageVideoIds async {
-    // TODO: Save this data to avoid loading it every time?
     final File data = await _videoIdsFile;
     final List<dynamic> videoIdsJson = json.decode(await data.readAsString());
     final List<VideoId> videoIds = VideoId.listFromJson(videoIdsJson);
