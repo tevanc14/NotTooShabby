@@ -21,16 +21,30 @@ class Storage {
 
   void loadVideoIds() async {
     final File cacheTimerFile = await _cacheTimerFile;
-    final bool cacheTimerFileExists = await cacheTimerFile.exists();
+
+    final bool cacheTimerFileIsEmpty =
+        (await cacheTimerFile.readAsString()).isEmpty;
+
+    if (cacheTimerFileIsEmpty) {
+      _retrieveVideoIds();
+      return;
+    }
+
     final bool shouldInvalidateCache =
         await _shouldInvalidateCache(cacheTimerFile);
-    if (!cacheTimerFileExists || shouldInvalidateCache) {
+    if (shouldInvalidateCache) {
       _retrieveVideoIds();
+      return;
     }
   }
 
   Future<List<VideoId>> get localStorageVideoIds async {
     final File data = await _videoIdsFile;
+
+    if (!await data.exists()) {
+      loadVideoIds();
+    }
+
     final List<dynamic> videoIdsJson = json.decode(await data.readAsString());
     final List<VideoId> videoIds = VideoId.listFromJson(videoIdsJson);
     return videoIds;
@@ -55,8 +69,14 @@ class Storage {
   }
 
   Future<File> _localFile(String fileName) async {
-    final path = await _localPath;
-    return File('$path/$fileName');
+    final String path = await _localPath;
+    final File file = File('$path/$fileName');
+
+    if (await file.exists()) {
+      return file;
+    } else {
+      return await file.create();
+    }
   }
 
   Future<bool> _shouldInvalidateCache(File cacheTimerFile) async {

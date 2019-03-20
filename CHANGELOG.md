@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2019-03-19
+
+Changed
+
+- Fixed bug where file access would throw errors on first app load
+
 ## [0.1.2] - 2019-03-19
 
 Changed

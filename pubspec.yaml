@@ -1,6 +1,6 @@
 name: not_too_shabby
 description: Plays a random video from the "Not Too Shabby" YouTube playlist by kisscactus
-version: 0.1.2
+version: 0.1.3
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
