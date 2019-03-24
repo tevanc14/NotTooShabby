@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0] - 2019-03-24
+
+Added
+
+- Use entire video detail object as opposed to just ids
+- Page that keeps a local record of watch history
+- SnackBar when loading the app for the first time with no internet connection
+
 ## [0.1.3] - 2019-03-19
 
 Changed
