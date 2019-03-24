@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0] - 2019-03-24
+
+Added
+
+- Can play a video from the Watch History screen
+- Show total number of Not Too Shabby videos that exist
+
+Changed
+
+- Miscellaneous cleanup
+
 ## [0.2.0] - 2019-03-24
 
 Added

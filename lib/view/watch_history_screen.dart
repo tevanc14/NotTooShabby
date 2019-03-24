@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_youtube/flutter_youtube.dart';
+import 'package:not_too_shabby/model/video_detail.dart';
 import 'package:not_too_shabby/model/watch_history.dart';
+import 'package:not_too_shabby/model/youtube_api_key.dart';
+import 'package:not_too_shabby/service/storage_interactions.dart';
 
 class WatchHistoryScreen extends StatefulWidget {
   final WatchHistory watchHistory;
+  final List<VideoDetail> videoDetails;
 
   WatchHistoryScreen(
     this.watchHistory,
+    this.videoDetails,
   );
 
   @override
@@ -69,7 +75,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
       variableText = 'videos';
     }
 
-    return '${watchHistoryKeys.length} Not Too Shabby $variableText watched';
+    return '${watchHistoryKeys.length} of ${widget.videoDetails.length} Not Too Shabby $variableText watched';
   }
 
   List<String> _sortedWatchHistoryKeys() {
@@ -89,7 +95,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
   }
 
   Widget _watchHistoryTile(VideoWatchHistory videoWatchHistory) {
-    final double dimension = 72.0;
+    final double dimension = 75.0;
 
     return GestureDetector(
       child: ListTile(
@@ -107,6 +113,21 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
           '${videoWatchHistory.watchEvents.length}',
         ),
       ),
+      onTap: () async {
+        final YoutubeApiKey youtubeApiKey =
+            await Storage.youtubeApiKey(context);
+
+        FlutterYoutube.playYoutubeVideoById(
+          apiKey: youtubeApiKey.value,
+          videoId: videoWatchHistory.videoDetail.videoId,
+          autoPlay: true,
+          fullScreen: true,
+        );
+
+        setState(() {
+          widget.watchHistory.addToWatchHistory(videoWatchHistory.videoDetail);
+        });
+      },
     );
   }
 }

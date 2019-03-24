@@ -75,8 +75,6 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   }
 
   Widget _randomVideoButton(BuildContext context) {
-    final Storage storage = Storage(context);
-
     final snackBar = SnackBar(
       content: Text(
         'Unable to connect to internet to retrieve videos',
@@ -96,7 +94,7 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     };
 
     final Function enabledButtonFunction = () {
-      _randomVideo(storage);
+      _randomVideo();
     };
 
     if (videoDetails == null || videoDetails.length <= 0) {
@@ -125,10 +123,10 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     );
   }
 
-  void _randomVideo(Storage storage) async {
+  void _randomVideo() async {
     final int randomIndex = Random().nextInt(videoDetails.length);
     final VideoDetail randomVideoDetails = videoDetails[randomIndex];
-    final YoutubeApiKey youtubeApiKey = await storage.youtubeApiKey;
+    final YoutubeApiKey youtubeApiKey = await Storage.youtubeApiKey(context);
 
     FlutterYoutube.playYoutubeVideoById(
       apiKey: youtubeApiKey.value,
@@ -144,7 +142,10 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => WatchHistoryScreen(watchHistory),
+        builder: (context) => WatchHistoryScreen(
+              watchHistory,
+              videoDetails,
+            ),
       ),
     );
   }

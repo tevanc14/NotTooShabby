@@ -12,25 +12,15 @@ import 'package:http/http.dart' as http;
 class Storage {
   static final String _assetsDirectoryName = 'assets';
   static final String _secretsFileName = 'secrets.json';
-
   static final String _videoDetailsFileName = 'videoDetails.json';
-  static final String _cacheTimerFileName = 'videoIdCacheTimer.json';
+  static final String _cacheTimerFileName = 'videoDetailsCacheTimer.json';
   static final String _watchHistoryFileName = 'watchHistory.json';
-
-  BuildContext _context;
-
-  List<VideoDetail> videoIds;
-
-  Storage(BuildContext context) {
-    this._context = context;
-  }
 
   static void loadVideoDetails() async {
     final File cacheTimerFile = await _cacheTimerFile;
 
     final bool cacheTimerFileIsEmpty =
-        (await cacheTimerFile.readAsString()).isEmpty;
-
+        cacheTimerFile.readAsStringSync().isEmpty;
     if (cacheTimerFileIsEmpty) {
       _retrieveVideoDetails();
       return;
@@ -45,14 +35,14 @@ class Storage {
   }
 
   static Future<List<VideoDetail>> get localStorageVideoDetails async {
-    final File data = await _videoDetailsFile;
+    final File videoDetailsFile = await _videoDetailsFile;
 
-    if (!data.existsSync()) {
+    if (videoDetailsFile.readAsStringSync().isEmpty) {
       loadVideoDetails();
     }
 
     final List<dynamic> videoDetailsJson =
-        json.decode(await data.readAsString());
+        json.decode(videoDetailsFile.readAsStringSync());
     final List<VideoDetail> videoDetails =
         VideoDetail.listFromJson(videoDetailsJson);
     return videoDetails;
@@ -76,8 +66,9 @@ class Storage {
     watchHistoryFile.writeAsString(json.encode(watchHistory.watchHistoryMap));
   }
 
-  Future<YoutubeApiKey> get youtubeApiKey async {
-    final Map<String, dynamic> json = await _loadJsonAsset(_secretsFileName);
+  static Future<YoutubeApiKey> youtubeApiKey(BuildContext context) async {
+    final Map<String, dynamic> json =
+        await _loadJsonAsset(_secretsFileName, context);
     return YoutubeApiKey.fromJson(json);
   }
 
@@ -102,7 +93,7 @@ class Storage {
     final String path = await _localPath;
     final File file = File('$path/$fileName');
 
-    if (await file.exists()) {
+    if (file.existsSync()) {
       return file;
     } else {
       return await file.create();
@@ -111,9 +102,10 @@ class Storage {
 
   static Future<bool> _shouldInvalidateCache(File cacheTimerFile) async {
     final CacheTimer cacheTimer = await _localStorageCacheTimer(cacheTimerFile);
-    final DateTime videoIdsLastRetrieved = DateTime.fromMillisecondsSinceEpoch(
-        cacheTimer.videoDetailsLastRetrieved);
-    return _isOlderThanADay(videoIdsLastRetrieved);
+    final DateTime videoDetailsLastRetrieved =
+        DateTime.fromMillisecondsSinceEpoch(
+            cacheTimer.videoDetailsLastRetrieved);
+    return _isOlderThanADay(videoDetailsLastRetrieved);
   }
 
   static Future<CacheTimer> _localStorageCacheTimer(File cacheTimerFile) async {
@@ -128,12 +120,11 @@ class Storage {
   }
 
   static void _retrieveVideoDetails() {
-    print('fetching from GCS');
     http.get(_buildGCSUrl()).then((response) async {
       final int statusCode = response.statusCode;
       if (statusCode == 200) {
-        final File videoIdsFile = await _videoDetailsFile;
-        videoIdsFile.writeAsString(response.body);
+        final File videoDetailsFile = await _videoDetailsFile;
+        videoDetailsFile.writeAsString(response.body);
         _makeCacheTimerFile();
       }
     });
@@ -147,8 +138,11 @@ class Storage {
     cacheTimerFile.writeAsString(json.encode(cacheTimerJson));
   }
 
-  Future<Map<String, dynamic>> _loadJsonAsset(String filename) async {
-    final String data = await DefaultAssetBundle.of(this._context)
+  static Future<Map<String, dynamic>> _loadJsonAsset(
+    String filename,
+    BuildContext context,
+  ) async {
+    final String data = await DefaultAssetBundle.of(context)
         .loadString('$_assetsDirectoryName/$filename');
     return json.decode(data);
   }
