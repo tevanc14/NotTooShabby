@@ -21,8 +21,6 @@ class WatchHistoryScreen extends StatefulWidget {
 class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    final List<String> watchHistoryKeys = _sortedWatchHistoryKeys();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -40,25 +38,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
               style: Theme.of(context).textTheme.title,
             ),
           ),
-          Expanded(
-            child: ListView.separated(
-              itemCount: watchHistoryKeys.length,
-              separatorBuilder: (
-                BuildContext context,
-                int index,
-              ) {
-                return Divider();
-              },
-              itemBuilder: (
-                BuildContext context,
-                int index,
-              ) {
-                final VideoWatchHistory videoWatchHistory = widget
-                    .watchHistory.watchHistoryMap[watchHistoryKeys[index]];
-                return _watchHistoryTile(videoWatchHistory);
-              },
-            ),
-          ),
+          _watchHistoryTileList(),
         ],
       ),
     );
@@ -92,6 +72,30 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
     });
 
     return watchHistoryKeys;
+  }
+
+  Widget _watchHistoryTileList() {
+    final List<String> watchHistoryKeys = _sortedWatchHistoryKeys();
+
+    return Expanded(
+      child: ListView.separated(
+        itemCount: watchHistoryKeys.length,
+        separatorBuilder: (
+          BuildContext context,
+          int index,
+        ) {
+          return Divider();
+        },
+        itemBuilder: (
+          BuildContext context,
+          int index,
+        ) {
+          final VideoWatchHistory videoWatchHistory =
+              widget.watchHistory.watchHistoryMap[watchHistoryKeys[index]];
+          return _watchHistoryTile(videoWatchHistory);
+        },
+      ),
+    );
   }
 
   Widget _watchHistoryTile(VideoWatchHistory videoWatchHistory) {

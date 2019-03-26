@@ -16,33 +16,31 @@ class Storage {
   static final String _cacheTimerFileName = 'videoDetailsCacheTimer.json';
   static final String _watchHistoryFileName = 'watchHistory.json';
 
-  static void loadVideoDetails() async {
+  static Future<String> loadVideoDetails() async {
     final File cacheTimerFile = await _cacheTimerFile;
 
     final bool cacheTimerFileIsEmpty =
         cacheTimerFile.readAsStringSync().isEmpty;
     if (cacheTimerFileIsEmpty) {
-      _retrieveVideoDetails();
-      return;
+      return await _retrieveVideoDetails();
     }
 
     final bool shouldInvalidateCache =
         await _shouldInvalidateCache(cacheTimerFile);
     if (shouldInvalidateCache) {
-      _retrieveVideoDetails();
-      return;
+      return await _retrieveVideoDetails();
     }
   }
 
   static Future<List<VideoDetail>> get localStorageVideoDetails async {
-    final File videoDetailsFile = await _videoDetailsFile;
+    File videoDetailsFile = await _videoDetailsFile;
+    String videoDetailsFileContent = videoDetailsFile.readAsStringSync();
 
-    if (videoDetailsFile.readAsStringSync().isEmpty) {
-      loadVideoDetails();
+    if (videoDetailsFileContent.isEmpty) {
+      videoDetailsFileContent = await loadVideoDetails();
     }
 
-    final List<dynamic> videoDetailsJson =
-        json.decode(videoDetailsFile.readAsStringSync());
+    final List<dynamic> videoDetailsJson = json.decode(videoDetailsFileContent);
     final List<VideoDetail> videoDetails =
         VideoDetail.listFromJson(videoDetailsJson);
     return videoDetails;
@@ -119,15 +117,20 @@ class Storage {
     return date.isBefore(DateTime.now().subtract(Duration(days: 1)));
   }
 
-  static void _retrieveVideoDetails() {
-    http.get(_buildGCSUrl()).then((response) async {
-      final int statusCode = response.statusCode;
-      if (statusCode == 200) {
-        final File videoDetailsFile = await _videoDetailsFile;
-        videoDetailsFile.writeAsString(response.body);
-        _makeCacheTimerFile();
-      }
-    });
+  static Future<String> _retrieveVideoDetails() async {
+    http.Response response = await http.get(_buildGCSUrl());
+    final int statusCode = response.statusCode;
+    if (statusCode == 200) {
+      final File videoDetailsFile = await _videoDetailsFile;
+      videoDetailsFile.writeAsString(response.body);
+      _makeCacheTimerFile();
+      return response.body;
+    }
+  }
+
+  static Future<String> gcsBody() async {
+    http.Response response = await http.get(_buildGCSUrl());
+    return response.body;
   }
 
   static Future<void> _makeCacheTimerFile() async {

@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.1] - 2019-03-25
+
+Added
+
+- Android app signing
+
+Changed
+
+- Wait on video detail file to get loaded so it doesn't error out the first time opening the app
+
 ## [0.3.0] - 2019-03-24
 
 Added

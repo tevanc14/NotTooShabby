@@ -13,8 +13,6 @@ import 'package:not_too_shabby/view/watch_history_screen.dart';
 class RandomVideoPlayer extends StatefulWidget {
   final String title = 'Not Too Shabby';
 
-  RandomVideoPlayer();
-
   @override
   _RandomVideoPlayerState createState() => _RandomVideoPlayerState();
 }
@@ -26,7 +24,6 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   @override
   void initState() {
     _initializeWatchHistory();
-    _initializeLocalVideoDetails();
     super.initState();
   }
 
@@ -45,7 +42,7 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
             onPressed: () {
               _toWatchHistoryScreen();
             },
-            tooltip: 'Watch History',
+            tooltip: 'Watch history',
           ),
           IconButton(
             icon: Icon(
@@ -54,7 +51,7 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
             onPressed: () {
               _toInfoScreen();
             },
-            tooltip: 'App Info',
+            tooltip: 'App info',
           ),
         ],
       ),
@@ -75,36 +72,43 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   }
 
   Widget _randomVideoButton(BuildContext context) {
-    final snackBar = SnackBar(
-      content: Text(
-        'Unable to connect to internet to retrieve videos',
-      ),
-      action: SnackBarAction(
-        label: 'Try again',
-        onPressed: () {
-          setState(() {
-            _initializeWatchHistory();
-          });
-        },
-      ),
-    );
-
-    final Function disabledButtonFunction = () {
-      Scaffold.of(context).showSnackBar(snackBar);
-    };
-
-    final Function enabledButtonFunction = () {
+    final Function successButtonFunction = () {
       _randomVideo();
     };
 
-    if (videoDetails == null || videoDetails.length <= 0) {
-      return _randomVideoButtonBuilder(disabledButtonFunction);
-    } else {
-      return _randomVideoButtonBuilder(enabledButtonFunction);
-    }
+    final Function errorButtonFunction = () {
+      setState(() {});
+    };
+
+    return FutureBuilder<List<VideoDetail>>(
+      future: Storage.localStorageVideoDetails,
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<VideoDetail>> snapshot,
+      ) {
+        if (snapshot.hasData) {
+          videoDetails = snapshot.data;
+
+          return _randomVideoButtonBuilder(
+            successButtonFunction,
+            Icons.play_arrow,
+          );
+        } else if (snapshot.hasError) {
+          return _randomVideoButtonBuilder(
+            errorButtonFunction,
+            Icons.refresh,
+          );
+        } else {
+          return CircularProgressIndicator();
+        }
+      },
+    );
   }
 
-  Widget _randomVideoButtonBuilder(Function callback) {
+  Widget _randomVideoButtonBuilder(
+    Function callback,
+    IconData iconData,
+  ) {
     final double buttonSize = 250.0;
 
     return SizedBox(
@@ -115,11 +119,21 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
           callback();
         },
         tooltip: 'Play random video',
-        child: Icon(
-          Icons.play_arrow,
-          size: buttonSize / 2,
+        child: _randomVideoButtonIconBuilder(
+          iconData,
+          buttonSize,
         ),
       ),
+    );
+  }
+
+  Widget _randomVideoButtonIconBuilder(
+    IconData iconData,
+    double buttonSize,
+  ) {
+    return Icon(
+      iconData,
+      size: buttonSize / 2,
     );
   }
 
@@ -162,13 +176,6 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   void _initializeWatchHistory() {
     Storage.readWatchHistory().then((WatchHistory readWatchHistory) {
       watchHistory = readWatchHistory;
-    });
-  }
-
-  void _initializeLocalVideoDetails() {
-    Storage.localStorageVideoDetails
-        .then((List<VideoDetail> localStorageVideoDetails) {
-      videoDetails = localStorageVideoDetails;
     });
   }
 }

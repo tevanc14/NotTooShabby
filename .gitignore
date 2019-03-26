@@ -40,6 +40,7 @@ build/
 **/android/**/.project
 **/android/**/.classpath
 **/android/**/.settings/
+**/android/**/key.properties
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
