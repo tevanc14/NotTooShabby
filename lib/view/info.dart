@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:not_too_shabby/service/storage_interactions.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,19 +21,30 @@ class Info extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(
-          _padding,
+        padding: EdgeInsets.symmetric(
+          horizontal: _padding,
         ),
         child: Center(
           child: Column(
             children: <Widget>[
               _header(
-                'What is this?',
+                'About',
                 textTheme,
               ),
-              _whatIsThisText(
-                aboutTextStyle,
-                linkTextStyle,
+              _bodyText(
+                _aboutText(
+                  aboutTextStyle,
+                  linkTextStyle,
+                ),
+              ),
+              _header(
+                'Watch History',
+                textTheme,
+              ),
+              _bodyText(
+                _watchHistoryText(
+                  aboutTextStyle,
+                ),
               ),
             ],
           ),
@@ -48,8 +58,8 @@ class Info extends StatelessWidget {
     TextTheme textTheme,
   ) {
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: _padding,
+      padding: EdgeInsets.symmetric(
+        vertical: _padding,
       ),
       child: Text(
         text,
@@ -58,7 +68,18 @@ class Info extends StatelessWidget {
     );
   }
 
-  Widget _whatIsThisText(
+  Widget _bodyText(
+    Widget bodyText,
+  ) {
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: _padding,
+      ),
+      child: bodyText,
+    );
+  }
+
+  Widget _aboutText(
     TextStyle aboutTextStyle,
     TextStyle linkTextStyle,
   ) {
@@ -86,11 +107,24 @@ class Info extends StatelessWidget {
           ),
           TextSpan(
             text: ' channel on YouTube. Simply press the play button '
-                'and a random video will be selected and played. Enjoy!',
+                'and a random video will be selected and played and '
+                'recorded in your watch history.',
             style: aboutTextStyle,
           ),
         ],
       ),
+    );
+  }
+
+  Widget _watchHistoryText(
+    TextStyle aboutTextStyle,
+  ) {
+    return Text(
+      'The watch history button in the app bar will take you to '
+          'a page that contains all the videos you have watched on this '
+          'device. It also will let you know how many videos you have '
+          'watched out of all the Not Too Shabby videos available.',
+      style: aboutTextStyle,
     );
   }
 }

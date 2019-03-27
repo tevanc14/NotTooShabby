@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.0] - 2019-03-26
+
+Added
+
+- Watch history info text on about page
+
+Changed
+
+- Spacing on about page
+
 ## [0.3.2] - 2019-03-26
 
 Changed

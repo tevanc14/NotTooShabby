@@ -114,7 +114,13 @@ class Storage {
   }
 
   static bool _isOlderThanADay(DateTime date) {
-    return date.isBefore(DateTime.now().subtract(Duration(days: 1)));
+    return date.isBefore(
+      DateTime.now().subtract(
+        Duration(
+          days: 1,
+        ),
+      ),
+    );
   }
 
   static Future<String> _retrieveVideoDetails() async {
