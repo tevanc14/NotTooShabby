@@ -89,51 +89,19 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
         if (snapshot.hasData) {
           videoDetails = snapshot.data;
 
-          return _randomVideoButtonBuilder(
-            successButtonFunction,
-            Icons.play_arrow,
+          return _RandomVideoButton(
+            callback: successButtonFunction,
+            iconData: Icons.play_arrow,
           );
         } else if (snapshot.hasError) {
-          return _randomVideoButtonBuilder(
-            errorButtonFunction,
-            Icons.refresh,
+          return _RandomVideoButton(
+            callback: errorButtonFunction,
+            iconData: Icons.refresh,
           );
         } else {
           return CircularProgressIndicator();
         }
       },
-    );
-  }
-
-  Widget _randomVideoButtonBuilder(
-    Function callback,
-    IconData iconData,
-  ) {
-    final double buttonSize = 250.0;
-
-    return SizedBox(
-      height: buttonSize,
-      width: buttonSize,
-      child: FloatingActionButton(
-        onPressed: () {
-          callback();
-        },
-        tooltip: 'Play random video',
-        child: _randomVideoButtonIconBuilder(
-          iconData,
-          buttonSize,
-        ),
-      ),
-    );
-  }
-
-  Widget _randomVideoButtonIconBuilder(
-    IconData iconData,
-    double buttonSize,
-  ) {
-    return Icon(
-      iconData,
-      size: buttonSize / 2,
     );
   }
 
@@ -177,5 +145,53 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     Storage.readWatchHistory().then((WatchHistory readWatchHistory) {
       watchHistory = readWatchHistory;
     });
+  }
+}
+
+class _RandomVideoButton extends StatelessWidget {
+  final Function callback;
+  final IconData iconData;
+
+  final double buttonSize = 250.0;
+
+  const _RandomVideoButton({
+    @required this.callback,
+    @required this.iconData,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: buttonSize,
+      width: buttonSize,
+      child: FloatingActionButton(
+        onPressed: () {
+          callback();
+        },
+        tooltip: 'Play random video',
+        child: _RandomVideoButtonIcon(
+          iconData: iconData,
+          buttonSize: buttonSize,
+        ),
+      ),
+    );
+  }
+}
+
+class _RandomVideoButtonIcon extends StatelessWidget {
+  final IconData iconData;
+  final double buttonSize;
+
+  _RandomVideoButtonIcon({
+    @required this.iconData,
+    @required this.buttonSize,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      iconData,
+      size: buttonSize / 1.5,
+    );
   }
 }

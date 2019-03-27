@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.2] - 2019-03-26
+
+Changed
+
+- Altered color scheme
+- Renamed some functions
+- Broke out play button into widgets as opposed to functions
+
 ## [0.3.1] - 2019-03-25
 
 Added

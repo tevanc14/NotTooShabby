@@ -6,7 +6,8 @@ class NotTooShabbyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        accentColor: Colors.amber,
+        primaryColor: Colors.black,
         brightness: Brightness.dark,
       ),
       home: RandomVideoPlayer(),

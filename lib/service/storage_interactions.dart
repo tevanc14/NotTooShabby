@@ -42,7 +42,7 @@ class Storage {
 
     final List<dynamic> videoDetailsJson = json.decode(videoDetailsFileContent);
     final List<VideoDetail> videoDetails =
-        VideoDetail.listFromJson(videoDetailsJson);
+        VideoDetail.listFromYoutubeJson(videoDetailsJson);
     return videoDetails;
   }
 

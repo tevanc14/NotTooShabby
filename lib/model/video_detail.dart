@@ -33,7 +33,7 @@ class VideoDetail {
     highThumbnail = Thumbnail.fromJson(thumbnailJson['high']);
   }
 
-  static List<VideoDetail> listFromJson(List<dynamic> dynamicVideoIds) {
+  static List<VideoDetail> listFromYoutubeJson(List<dynamic> dynamicVideoIds) {
     return dynamicVideoIds
         .map((dynamicVideoId) => VideoDetail.fromYoutubeJson(dynamicVideoId))
         .toList();

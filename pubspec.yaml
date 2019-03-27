@@ -2,7 +2,7 @@ name: not_too_shabby
 description: Plays a random video from the "Not Too Shabby" YouTube playlist by kisscactus
 authors:
   - Tevan Carrell <tevanc14@gmail.com>
-version: 0.3.1
+version: 0.3.2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
