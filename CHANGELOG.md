@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.2] - 2019-03-28
+
+Changed
+
+- Fixed bug where a new file would never be retrieved from Cloud Storage as it was only checking if the file was not empty
+
 ## [0.5.1] - 2019-03-27
 
 Changed

@@ -16,28 +16,30 @@ class Storage {
   static final String _cacheTimerFileName = 'videoDetailsCacheTimer.json';
   static final String _watchHistoryFileName = 'watchHistory.json';
 
-  static Future<String> loadVideoDetails() async {
+  static Future<bool> _shouldLoadVideoDetails() async {
     final File cacheTimerFile = await _cacheTimerFile;
 
     final bool cacheTimerFileIsEmpty =
         cacheTimerFile.readAsStringSync().isEmpty;
     if (cacheTimerFileIsEmpty) {
-      return await _retrieveVideoDetails();
+      return true;
     }
 
     final bool shouldInvalidateCache =
         await _shouldInvalidateCache(cacheTimerFile);
     if (shouldInvalidateCache) {
-      return await _retrieveVideoDetails();
+      return true;
     }
+
+    return false;
   }
 
   static Future<List<VideoDetail>> get localStorageVideoDetails async {
     File videoDetailsFile = await _videoDetailsFile;
     String videoDetailsFileContent = videoDetailsFile.readAsStringSync();
 
-    if (videoDetailsFileContent.isEmpty) {
-      videoDetailsFileContent = await loadVideoDetails();
+    if (await _shouldLoadVideoDetails()) {
+      videoDetailsFileContent = await _retrieveVideoDetails();
     }
 
     final List<dynamic> videoDetailsJson = json.decode(videoDetailsFileContent);
