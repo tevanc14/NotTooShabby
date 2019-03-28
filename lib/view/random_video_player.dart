@@ -121,15 +121,17 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   }
 
   void _toWatchHistoryScreen() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => WatchHistoryScreen(
-              watchHistory,
-              videoDetails,
-            ),
-      ),
-    );
+    if (watchHistory != null && videoDetails != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WatchHistoryScreen(
+                watchHistory,
+                videoDetails,
+              ),
+        ),
+      );
+    }
   }
 
   void _toInfoScreen() {

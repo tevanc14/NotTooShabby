@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.1] - 2019-03-27
+
+Changed
+
+- Only go into watch history page when the parameters are not null (prevents an error if navigating to the page faster than it can read/download the data files)
+
 ## [0.5.0] - 2019-03-27
 
 Added
