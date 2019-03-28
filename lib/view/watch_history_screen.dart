@@ -19,6 +19,21 @@ class WatchHistoryScreen extends StatefulWidget {
 }
 
 class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
+  final int displayBatchSize = 10;
+
+  List<String> watchHistoryKeys;
+  List<String> displayWatchHistoryKeys;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      watchHistoryKeys = _sortedWatchHistoryKeys();
+      displayWatchHistoryKeys =
+          watchHistoryKeys.take(displayBatchSize).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,11 +90,30 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
   }
 
   Widget _watchHistoryTileList() {
-    final List<String> watchHistoryKeys = _sortedWatchHistoryKeys();
+    final ScrollController scrollController = ScrollController();
+    bool isLoading = false;
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        if (!isLoading &&
+            displayWatchHistoryKeys.length < watchHistoryKeys.length) {
+          isLoading = !isLoading;
+          setState(
+            () {
+              displayWatchHistoryKeys.addAll(watchHistoryKeys
+                  .skip(displayWatchHistoryKeys.length)
+                  .take(displayBatchSize));
+            },
+          );
+        }
+      }
+    });
 
     return Expanded(
       child: ListView.separated(
-        itemCount: watchHistoryKeys.length,
+        controller: scrollController,
+        itemCount: displayWatchHistoryKeys.length,
         separatorBuilder: (
           BuildContext context,
           int index,
@@ -90,8 +124,8 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
           BuildContext context,
           int index,
         ) {
-          final VideoWatchHistory videoWatchHistory =
-              widget.watchHistory.watchHistoryMap[watchHistoryKeys[index]];
+          final VideoWatchHistory videoWatchHistory = widget
+              .watchHistory.watchHistoryMap[displayWatchHistoryKeys[index]];
           return _watchHistoryTile(videoWatchHistory);
         },
       ),

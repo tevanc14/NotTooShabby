@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.0] - 2019-03-27
+
+Added
+
+- Watch history loads a number of results at a time (to avoid trying to render a thousand tiles unnecessarily)
+
 ## [0.4.0] - 2019-03-26
 
 Added
