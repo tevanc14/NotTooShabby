@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:not_too_shabby/model/video_detail.dart';
@@ -140,8 +141,9 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
         leading: SizedBox(
           width: dimension,
           height: dimension,
-          child: Image.network(
-            videoWatchHistory.videoDetail.defaultThumbnail.url,
+          child: FadeInImage.assetNetwork(
+            image: videoWatchHistory.videoDetail.defaultThumbnail.url,
+            placeholder: 'assets/grey-box.png',
           ),
         ),
         title: Text(
@@ -165,6 +167,11 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
         setState(() {
           widget.watchHistory.addToWatchHistory(videoWatchHistory.videoDetail);
         });
+
+        FirebaseAnalytics().logEvent(
+          name: 'watch_history_video_play',
+          parameters: {'videoId': videoWatchHistory.videoDetail.videoId},
+        );
       },
     );
   }

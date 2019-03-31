@@ -1,4 +1,4 @@
-package com.example.nottooshabby;
+package com.tevan.nottooshabby;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

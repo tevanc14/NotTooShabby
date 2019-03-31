@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:not_too_shabby/model/watch_history.dart';
@@ -118,6 +119,11 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     );
 
     watchHistory.addToWatchHistory(randomVideoDetails);
+
+    FirebaseAnalytics().logEvent(
+      name: 'random_video_play',
+      parameters: {'videoId': randomVideoDetails.videoId},
+    );
   }
 
   void _toWatchHistoryScreen() {

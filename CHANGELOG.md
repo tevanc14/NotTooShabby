@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0] - 2019-03-30
+
+Added
+
+- Firebase analytics with events for when a video is played
+- Blank grey boxes to represent thumbnails while loading
+
 ## [0.5.2] - 2019-03-28
 
 Changed

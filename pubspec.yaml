@@ -2,13 +2,14 @@ name: not_too_shabby
 description: Plays a random video from the "Not Too Shabby" YouTube playlist by kisscactus
 authors:
   - Tevan Carrell <tevanc14@gmail.com>
-version: 0.5.2
+version: 0.6.0
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   cupertino_icons: ^0.1.2
+  firebase_analytics: ^1.0.4
   flutter:
     sdk: flutter
   flutter_youtube: ^1.1.4
