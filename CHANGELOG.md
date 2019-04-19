@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.1] - 2019-04-19
+
+Changed
+
+- Unified size of text on info page
+
 ## [0.6.0] - 2019-03-30
 
 Added

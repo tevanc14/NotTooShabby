@@ -119,12 +119,18 @@ class Info extends StatelessWidget {
   Widget _watchHistoryText(
     TextStyle aboutTextStyle,
   ) {
-    return Text(
-      'The watch history button in the app bar will take you to '
-          'a page that contains all the videos you have watched on this '
-          'device. It also will let you know how many videos you have '
-          'watched out of all the Not Too Shabby videos available.',
-      style: aboutTextStyle,
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: 'The watch history button in the app bar will take you to '
+                'a page that contains all the videos you have watched on this '
+                'device. It also will let you know how many videos you have '
+                'watched out of all the Not Too Shabby videos available.',
+            style: aboutTextStyle,
+          )
+        ],
+      ),
     );
   }
 }
