@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.0] - 2019-04-28
+
+Added
+
+- Firebase analytics for iOS
+
 ## [0.6.1] - 2019-04-19
 
 Changed

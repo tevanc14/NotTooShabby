@@ -41,6 +41,7 @@ build/
 **/android/**/.classpath
 **/android/**/.settings/
 **/android/**/key.properties
+**/android/**/google-services.json
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
