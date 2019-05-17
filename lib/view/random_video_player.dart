@@ -4,7 +4,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:not_too_shabby/model/watch_history.dart';
-
 import 'package:not_too_shabby/model/video_detail.dart';
 import 'package:not_too_shabby/model/youtube_api_key.dart';
 import 'package:not_too_shabby/service/storage_interactions.dart';
@@ -12,7 +11,7 @@ import 'package:not_too_shabby/view/info.dart';
 import 'package:not_too_shabby/view/watch_history_screen.dart';
 
 class RandomVideoPlayer extends StatefulWidget {
-  final String title = 'Not Too Shabby';
+  final String title = 'NOT TOO SHABBY';
 
   @override
   _RandomVideoPlayerState createState() => _RandomVideoPlayerState();
@@ -34,6 +33,9 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
       appBar: AppBar(
         title: Text(
           widget.title,
+          style: TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
         ),
         actions: <Widget>[
           IconButton(
@@ -56,18 +58,29 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
           ),
         ],
       ),
-      body: Builder(
-        builder: (BuildContext context) {
-          return Center(
+      body: Stack(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/background.png',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 _randomVideoButton(context),
+                new _WrittenTitle(),
               ],
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
@@ -92,12 +105,10 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
 
           return _RandomVideoButton(
             callback: successButtonFunction,
-            iconData: Icons.play_arrow,
           );
         } else if (snapshot.hasError) {
           return _RandomVideoButton(
             callback: errorButtonFunction,
-            iconData: Icons.refresh,
           );
         } else {
           return CircularProgressIndicator();
@@ -158,13 +169,11 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
 
 class _RandomVideoButton extends StatelessWidget {
   final Function callback;
-  final IconData iconData;
 
   final double buttonSize = 250.0;
 
   const _RandomVideoButton({
     @required this.callback,
-    @required this.iconData,
   });
 
   @override
@@ -172,34 +181,25 @@ class _RandomVideoButton extends StatelessWidget {
     return SizedBox(
       height: buttonSize,
       width: buttonSize,
-      child: FloatingActionButton(
-        onPressed: () {
-          callback();
-        },
-        tooltip: 'Play random video',
-        child: _RandomVideoButtonIcon(
-          iconData: iconData,
-          buttonSize: buttonSize,
+      child: InkWell(
+        onTap: this.callback,
+        child: Image.asset(
+          'assets/play_button.png',
         ),
       ),
     );
   }
 }
 
-class _RandomVideoButtonIcon extends StatelessWidget {
-  final IconData iconData;
-  final double buttonSize;
-
-  _RandomVideoButtonIcon({
-    @required this.iconData,
-    @required this.buttonSize,
-  });
-
+class _WrittenTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Icon(
-      iconData,
-      size: buttonSize / 1.5,
+    return SizedBox(
+      width: 250.0,
+      height: 200.0,
+      child: Image.asset(
+        'assets/written_title.png',
+      ),
     );
   }
 }

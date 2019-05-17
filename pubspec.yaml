@@ -2,15 +2,15 @@ name: not_too_shabby
 description: Plays a random video from the "Not Too Shabby" YouTube playlist by kisscactus
 authors:
   - Tevan Carrell <tevanc14@gmail.com>
-version: 0.7.0
+version: 0.8.0
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   cupertino_icons: ^0.1.2
-  firebase_core: ^0.2.5
-  firebase_analytics: ^1.0.4
+  firebase_analytics: ^3.0.1
+  firebase_core: ^0.4.0+1
   flutter:
     sdk: flutter
   flutter_youtube: ^1.1.6
@@ -25,4 +25,8 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+  fonts:
+    - family: RobotoCondensed
+      fonts:
+        - asset: assets/fonts/RobotoCondensed-Regular.ttf
   uses-material-design: true

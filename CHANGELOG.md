@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.0] - 2019-05-16
+
+Added
+
+- Android launch icon
+- Roboto Condensed font
+- Written title on random video page
+
+Changed
+
+- Convert to AndroidX
+- Play video button to logo button
+
 ## [0.7.0] - 2019-04-28
 
 Added

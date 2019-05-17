@@ -143,7 +143,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
           height: dimension,
           child: FadeInImage.assetNetwork(
             image: videoWatchHistory.videoDetail.defaultThumbnail.url,
-            placeholder: 'assets/grey-box.png',
+            placeholder: 'assets/grey_box.png',
           ),
         ),
         title: Text(
