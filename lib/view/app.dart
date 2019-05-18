@@ -9,7 +9,7 @@ class NotTooShabbyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        accentColor: Color(0xFFF9D938),
+        accentColor: Color(0xFFF9D835),
         primaryColor: Colors.black,
         brightness: Brightness.dark,
         fontFamily: 'RobotoCondensed',

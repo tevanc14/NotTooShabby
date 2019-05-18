@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.0] - 2019-05-18
+
+Added
+
+- Custom launch screen for Android
+
 ## [0.8.0] - 2019-05-16
 
 Added
