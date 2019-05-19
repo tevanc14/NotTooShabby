@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.10.0] - 2019-05-18
+
+Added
+
+- App icon for iOS
+
 ## [0.9.0] - 2019-05-18
 
 Added
