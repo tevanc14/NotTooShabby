@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.11.0] - 2019-05-25
+
+Added
+
+- Change video player layout when orientation changes
+
 ## [0.10.0] - 2019-05-18
 
 Added
