@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.12.0] - 2019-05-26
+
+Added
+
+- Watch stats dialog
+  - Most watched video with count
+  - Total watch count
+
 ## [0.11.0] - 2019-05-25
 
 Added

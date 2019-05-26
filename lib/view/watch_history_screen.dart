@@ -42,6 +42,15 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
         title: Text(
           'Watch History',
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.assessment,
+            ),
+            onPressed: _watchStatsDialog,
+            tooltip: 'Watch stats',
+          )
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -173,6 +182,125 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
           parameters: {'videoId': videoWatchHistory.videoDetail.videoId},
         );
       },
+    );
+  }
+
+  void _watchStatsDialog() {
+    ThemeData themeData = Theme.of(context);
+    TextTheme textTheme = themeData.textTheme;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(
+                16.0,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  'Watch Stats',
+                  style: textTheme.display1,
+                ),
+                Column(
+                  children: <Widget>[
+                    _WatchStatsHeading(
+                      text: 'Most watched',
+                    ),
+                    _watchHistoryTile(
+                      _mostWatched(),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    _WatchStatsHeading(
+                      text: 'Total watches',
+                    ),
+                    Text(
+                      _totalWatchCount().toString(),
+                      style: textTheme.title,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Text(
+                        'CLOSE',
+                      ),
+                      textColor: themeData.accentColor,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  VideoWatchHistory _mostWatched() {
+    VideoWatchHistory mostWatched;
+    widget.watchHistory.watchHistoryMap.forEach((
+      String videoId,
+      VideoWatchHistory videoWatchHistory,
+    ) {
+      if (mostWatched == null) {
+        mostWatched = videoWatchHistory;
+      } else if (videoWatchHistory.watchEvents.length >
+          mostWatched.watchEvents.length) {
+        mostWatched = videoWatchHistory;
+      }
+    });
+
+    return mostWatched;
+  }
+
+  int _totalWatchCount() {
+    int totalWatchCount = 0;
+    widget.watchHistory.watchHistoryMap.forEach((
+      String videoId,
+      VideoWatchHistory videoWatchHistory,
+    ) {
+      totalWatchCount += videoWatchHistory.watchEvents.length;
+    });
+    return totalWatchCount;
+  }
+}
+
+class _WatchStatsHeading extends StatelessWidget {
+  final String text;
+
+  const _WatchStatsHeading({
+    @required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: 32.0,
+        bottom: 16.0,
+      ),
+      child: Text(
+        text,
+        style: textTheme.title,
+      ),
     );
   }
 }
