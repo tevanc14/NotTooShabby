@@ -184,7 +184,9 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
 
         FirebaseAnalytics().logEvent(
           name: 'watch_history_video_play',
-          parameters: {'videoId': videoWatchHistory.videoDetail.videoId},
+          parameters: {
+            'videoId': videoWatchHistory.videoDetail.videoId,
+          },
         );
       },
     );

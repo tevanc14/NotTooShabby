@@ -126,7 +126,9 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
 
     FirebaseAnalytics().logEvent(
       name: 'random_video_play',
-      parameters: {'videoId': randomVideoDetails.videoId},
+      parameters: {
+        'videoId': randomVideoDetails.videoId,
+      },
     );
   }
 
@@ -188,14 +190,14 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
 class _RandomVideoButton extends StatelessWidget {
   final Function callback;
 
-  final double buttonSize = 250.0;
-
   const _RandomVideoButton({
     @required this.callback,
   });
 
   @override
   Widget build(BuildContext context) {
+    final double buttonSize = MediaQuery.of(context).size.width * 0.5;
+
     return SizedBox(
       height: buttonSize,
       width: buttonSize,
@@ -212,9 +214,11 @@ class _RandomVideoButton extends StatelessWidget {
 class _WrittenTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width * 0.5;
+
     return SizedBox(
-      width: 250.0,
-      height: 200.0,
+      width: width,
+      height: width * 0.8,
       child: Image.asset(
         'assets/written_title.png',
       ),

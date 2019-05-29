@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.15.0] - 2019-05-28
+
+Added
+
+- Size the player button and written title proportionally to the screen
+
 ## [0.14.0] - 2019-05-28
 
 Added
