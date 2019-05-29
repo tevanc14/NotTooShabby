@@ -16,4 +16,4 @@ The app pulls down and caches (in another local file) the aforementioned file. O
 
 #### Why local storage
 
-This application was designed to be serverless, easy, and cheap. Local storage was elected at first because a very small amount of data was going to be stored. And it continued to be the choice as it caused no large issues and would get the job done and it used very little data.
+This application was designed to be serverless, easy, and cheap. Local storage was elected at first because a very small amount of data was going to be stored. It continued to be the choice as it would get the job done and it used very little data.
