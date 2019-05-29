@@ -71,14 +71,7 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
             ),
           ),
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                _randomVideoButton(context),
-                new _WrittenTitle(),
-              ],
-            ),
+            child: _layoutPlayer(),
           ),
         ],
       ),
@@ -164,6 +157,31 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     Storage.readWatchHistory().then((WatchHistory readWatchHistory) {
       watchHistory = readWatchHistory;
     });
+  }
+
+  bool _widerThanTall() {
+    MediaQueryData queryData = MediaQuery.of(context);
+    return queryData.size.width > queryData.size.height;
+  }
+
+  Widget _layoutPlayer() {
+    final children = <Widget>[
+      _randomVideoButton(context),
+      _WrittenTitle(),
+    ];
+    if (_widerThanTall()) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: children,
+      );
+    } else {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: children,
+      );
+    }
   }
 }
 

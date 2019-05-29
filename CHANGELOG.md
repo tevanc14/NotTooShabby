@@ -1,10 +1,24 @@
 # Changelog
 
-## [0.11.0] - 2019-05-28
+## [0.13.0] - 2019-05-28
 
 Added
 
 - Privacy policies
+
+## [0.12.0] - 2019-05-26
+
+Added
+
+- Watch stats dialog
+  - Most watched video with count
+  - Total watch count
+
+## [0.11.0] - 2019-05-25
+
+Added
+
+- Change video player layout when orientation changes
 
 ## [0.10.0] - 2019-05-18
 
