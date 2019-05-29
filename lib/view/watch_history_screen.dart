@@ -20,23 +20,29 @@ class WatchHistoryScreen extends StatefulWidget {
 }
 
 class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
-  final int displayBatchSize = 10;
+  final int _displayBatchSize = 10;
+  final ScrollController _scrollController = ScrollController();
 
-  List<String> watchHistoryKeys;
-  List<String> displayWatchHistoryKeys;
+  List<String> _watchHistoryKeys;
+  List<String> _displayWatchHistoryKeys;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      watchHistoryKeys = _sortedWatchHistoryKeys();
-      displayWatchHistoryKeys =
-          watchHistoryKeys.take(displayBatchSize).toList();
-    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    _watchHistoryKeys = _sortedWatchHistoryKeys();
+    _displayWatchHistoryKeys =
+        _watchHistoryKeys.take(_displayBatchSize).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -100,20 +106,19 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
   }
 
   Widget _watchHistoryTileList() {
-    final ScrollController scrollController = ScrollController();
     bool isLoading = false;
 
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
         if (!isLoading &&
-            displayWatchHistoryKeys.length < watchHistoryKeys.length) {
+            _displayWatchHistoryKeys.length < _watchHistoryKeys.length) {
           isLoading = !isLoading;
           setState(
             () {
-              displayWatchHistoryKeys.addAll(watchHistoryKeys
-                  .skip(displayWatchHistoryKeys.length)
-                  .take(displayBatchSize));
+              _displayWatchHistoryKeys.addAll(_watchHistoryKeys
+                  .skip(_displayWatchHistoryKeys.length)
+                  .take(_displayBatchSize));
             },
           );
         }
@@ -122,8 +127,8 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
 
     return Expanded(
       child: ListView.separated(
-        controller: scrollController,
-        itemCount: displayWatchHistoryKeys.length,
+        controller: _scrollController,
+        itemCount: _displayWatchHistoryKeys.length,
         separatorBuilder: (
           BuildContext context,
           int index,
@@ -135,7 +140,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
           int index,
         ) {
           final VideoWatchHistory videoWatchHistory = widget
-              .watchHistory.watchHistoryMap[displayWatchHistoryKeys[index]];
+              .watchHistory.watchHistoryMap[_displayWatchHistoryKeys[index]];
           return _watchHistoryTile(videoWatchHistory);
         },
       ),
@@ -215,9 +220,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
                     _WatchStatsHeading(
                       text: 'Most watched',
                     ),
-                    _watchHistoryTile(
-                      _mostWatched(),
-                    ),
+                    _mostWatchedTile(),
                   ],
                 ),
                 Column(
@@ -251,6 +254,18 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
         );
       },
     );
+  }
+
+  Widget _mostWatchedTile() {
+    if (widget.watchHistory.watchHistoryMap.length == 0) {
+      return Text(
+        'No videos watched',
+      );
+    } else {
+      return _watchHistoryTile(
+        _mostWatched(),
+      );
+    }
   }
 
   VideoWatchHistory _mostWatched() {

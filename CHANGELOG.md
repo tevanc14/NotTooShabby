@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.14.0] - 2019-05-28
+
+Added
+
+- Reorder videos on watch history page when rewatching a video from that page
+
+Changed
+
+- Check for no videos when creating the stats dialog
+
 ## [0.13.0] - 2019-05-28
 
 Added
