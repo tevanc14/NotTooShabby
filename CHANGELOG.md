@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.15.1] - 2019-06-14
+
+Added
+
+- Encrypted Firebase files for build processes
+
+Removed
+
+- Old iOS app icons
+
 ## [0.15.0] - 2019-05-28
 
 Added
