@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0] - 2019-10-17
+
+Changed
+
+- Firebase encryption pattern
+- Removed alpha channel from app icons
+
 ## [0.15.1] - 2019-06-14
 
 Added
