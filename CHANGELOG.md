@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.17.0] - 2020-02-03
+
+Added
+
+- Pedantic static analysis
+
+Changed
+
+- Updated YouTube Player dependency
+- Cleaned up code organization of playing a video
+
 ## [0.16.0] - 2019-10-17
 
 Changed

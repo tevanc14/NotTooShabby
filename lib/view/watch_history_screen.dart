@@ -259,7 +259,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
   }
 
   Widget _mostWatchedTile() {
-    if (widget.watchHistory.watchHistoryMap.length == 0) {
+    if (widget.watchHistory.watchHistoryMap.isEmpty) {
       return Text(
         'No videos watched',
       );

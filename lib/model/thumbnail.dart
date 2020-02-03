@@ -10,9 +10,9 @@ class Thumbnail {
   );
 
   Thumbnail.fromJson(Map<String, dynamic> json) {
-    this.url = json['url'];
-    this.width = json['width'];
-    this.height = json['height'];
+    url = json['url'];
+    width = json['width'];
+    height = json['height'];
   }
 
   Map<String, dynamic> toJson() {
