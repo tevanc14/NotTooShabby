@@ -17,16 +17,14 @@ class Storage {
   static final String _watchHistoryFileName = 'watchHistory.json';
 
   static Future<bool> _shouldLoadVideoDetails() async {
-    final File cacheTimerFile = await _cacheTimerFile;
+    final cacheTimerFile = await _cacheTimerFile;
 
-    final bool cacheTimerFileIsEmpty =
-        cacheTimerFile.readAsStringSync().isEmpty;
+    final cacheTimerFileIsEmpty = cacheTimerFile.readAsStringSync().isEmpty;
     if (cacheTimerFileIsEmpty) {
       return true;
     }
 
-    final bool shouldInvalidateCache =
-        await _shouldInvalidateCache(cacheTimerFile);
+    final shouldInvalidateCache = await _shouldInvalidateCache(cacheTimerFile);
     if (shouldInvalidateCache) {
       return true;
     }
@@ -35,22 +33,21 @@ class Storage {
   }
 
   static Future<List<VideoDetail>> get localStorageVideoDetails async {
-    File videoDetailsFile = await _videoDetailsFile;
-    String videoDetailsFileContent = videoDetailsFile.readAsStringSync();
+    final videoDetailsFile = await _videoDetailsFile;
+    var videoDetailsFileContent = videoDetailsFile.readAsStringSync();
 
     if (await _shouldLoadVideoDetails()) {
       videoDetailsFileContent = await _retrieveVideoDetails();
     }
 
     final List<dynamic> videoDetailsJson = json.decode(videoDetailsFileContent);
-    final List<VideoDetail> videoDetails =
-        VideoDetail.listFromYoutubeJson(videoDetailsJson);
+    final videoDetails = VideoDetail.listFromYoutubeJson(videoDetailsJson);
     return videoDetails;
   }
 
   static Future<WatchHistory> readWatchHistory() async {
-    final File watchHistoryFile = await _watchHistoryFile;
-    final String watchHistoryFileContents = watchHistoryFile.readAsStringSync();
+    final watchHistoryFile = await _watchHistoryFile;
+    final watchHistoryFileContents = watchHistoryFile.readAsStringSync();
 
     if (watchHistoryFileContents.isEmpty) {
       return WatchHistory();
@@ -62,18 +59,18 @@ class Storage {
   }
 
   static Future<void> writeWatchHistory(WatchHistory watchHistory) async {
-    final File watchHistoryFile = await _watchHistoryFile;
-    watchHistoryFile.writeAsString(json.encode(watchHistory.watchHistoryMap));
+    final watchHistoryFile = await _watchHistoryFile;
+    await watchHistoryFile
+        .writeAsString(json.encode(watchHistory.watchHistoryMap));
   }
 
   static Future<YoutubeApiKey> youtubeApiKey(BuildContext context) async {
-    final Map<String, dynamic> json =
-        await _loadJsonAsset(_secretsFileName, context);
+    final json = await _loadJsonAsset(_secretsFileName, context);
     return YoutubeApiKey.fromJson(json);
   }
 
   static Future<String> get _localPath async {
-    final Directory directory = await getApplicationDocumentsDirectory();
+    final directory = await getApplicationDocumentsDirectory();
     return directory.path;
   }
 
@@ -90,8 +87,8 @@ class Storage {
   }
 
   static Future<File> _localFile(String fileName) async {
-    final String path = await _localPath;
-    final File file = File('$path/$fileName');
+    final path = await _localPath;
+    final file = File('$path/$fileName');
 
     if (file.existsSync()) {
       return file;
@@ -101,15 +98,14 @@ class Storage {
   }
 
   static Future<bool> _shouldInvalidateCache(File cacheTimerFile) async {
-    final CacheTimer cacheTimer = await _localStorageCacheTimer(cacheTimerFile);
-    final DateTime videoDetailsLastRetrieved =
-        DateTime.fromMillisecondsSinceEpoch(
-            cacheTimer.videoDetailsLastRetrieved);
+    final cacheTimer = await _localStorageCacheTimer(cacheTimerFile);
+    final videoDetailsLastRetrieved = DateTime.fromMillisecondsSinceEpoch(
+        cacheTimer.videoDetailsLastRetrieved);
     return _isOlderThanADay(videoDetailsLastRetrieved);
   }
 
   static Future<CacheTimer> _localStorageCacheTimer(File cacheTimerFile) async {
-    final String cacheTimerFileContents = await cacheTimerFile.readAsString();
+    final cacheTimerFileContents = await cacheTimerFile.readAsString();
     final Map<String, dynamic> cacheTimerJson =
         json.decode(cacheTimerFileContents);
     return CacheTimer.fromJson(cacheTimerJson);
@@ -126,43 +122,43 @@ class Storage {
   }
 
   static Future<String> _retrieveVideoDetails() async {
-    http.Response response = await http.get(_buildGCSUrl());
-    final int statusCode = response.statusCode;
+    final response = await http.get(_buildGCSUrl());
+    final statusCode = response.statusCode;
     if (statusCode == 200) {
-      final File videoDetailsFile = await _videoDetailsFile;
-      videoDetailsFile.writeAsString(response.body);
-      _makeCacheTimerFile();
+      final videoDetailsFile = await _videoDetailsFile;
+      await videoDetailsFile.writeAsString(response.body);
+      await _makeCacheTimerFile();
       return response.body;
     }
   }
 
   static Future<String> gcsBody() async {
-    http.Response response = await http.get(_buildGCSUrl());
+    final response = await http.get(_buildGCSUrl());
     return response.body;
   }
 
   static Future<void> _makeCacheTimerFile() async {
-    final File cacheTimerFile = await _cacheTimerFile;
-    Map<String, dynamic> cacheTimerJson = Map();
+    final cacheTimerFile = await _cacheTimerFile;
+    var cacheTimerJson = <String, dynamic>{};
     cacheTimerJson.addAll(
-        {"videoDetailsLastRetrieved": DateTime.now().millisecondsSinceEpoch});
-    cacheTimerFile.writeAsString(json.encode(cacheTimerJson));
+        {'videoDetailsLastRetrieved': DateTime.now().millisecondsSinceEpoch});
+    await cacheTimerFile.writeAsString(json.encode(cacheTimerJson));
   }
 
   static Future<Map<String, dynamic>> _loadJsonAsset(
     String filename,
     BuildContext context,
   ) async {
-    final String data = await DefaultAssetBundle.of(context)
+    final data = await DefaultAssetBundle.of(context)
         .loadString('$_assetsDirectoryName/$filename');
     return json.decode(data);
   }
 
   static String _buildGCSUrl() {
-    final String pathSeparator = '/';
-    final String baseUrl = 'https://storage.googleapis.com';
-    final String bucketName = 'not-too-shabby';
-    final String objectPath =
+    final pathSeparator = '/';
+    final baseUrl = 'https://storage.googleapis.com';
+    final bucketName = 'not-too-shabby';
+    final objectPath =
         ['videoDetails', 'videoDetails.json'].join(pathSeparator);
     return [baseUrl, bucketName, objectPath].join(pathSeparator);
   }

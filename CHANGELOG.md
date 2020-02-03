@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0] - 2020-02-03
+
+Changed
+
+- Corrections according to Pedantic
+- Fix inability to play video on iOS
+
 ## [0.17.0] - 2020-02-03
 
 Added

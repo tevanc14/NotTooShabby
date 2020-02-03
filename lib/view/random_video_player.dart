@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:not_too_shabby/model/watch_history.dart';
 import 'package:not_too_shabby/model/video_detail.dart';
-import 'package:not_too_shabby/model/youtube_api_key.dart';
 import 'package:not_too_shabby/service/storage_interactions.dart';
 import 'package:not_too_shabby/service/video_interactions.dart';
 import 'package:not_too_shabby/view/info.dart';
@@ -110,9 +109,9 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   }
 
   Future<void> _randomVideo() async {
-    final int randomIndex = Random().nextInt(videoDetails.length);
-    final VideoDetail randomVideoDetail = videoDetails[randomIndex];
-    final YoutubeApiKey youtubeApiKey = await Storage.youtubeApiKey(context);
+    final randomIndex = Random().nextInt(videoDetails.length);
+    final randomVideoDetail = videoDetails[randomIndex];
+    final youtubeApiKey = await Storage.youtubeApiKey(context);
 
     Video.play(
       watchHistory,
@@ -151,12 +150,12 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   }
 
   bool _widerThanTall() {
-    final MediaQueryData queryData = MediaQuery.of(context);
+    final queryData = MediaQuery.of(context);
     return queryData.size.width > queryData.size.height;
   }
 
   Widget _layoutPlayer() {
-    final List<Widget> children = <Widget>[
+    final children = <Widget>[
       _randomVideoButton(context),
       _WrittenTitle(),
     ];
@@ -185,7 +184,7 @@ class _RandomVideoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double buttonSize = MediaQuery.of(context).size.width * 0.5;
+    final buttonSize = MediaQuery.of(context).size.width * 0.5;
 
     return SizedBox(
       height: buttonSize,
@@ -203,7 +202,7 @@ class _RandomVideoButton extends StatelessWidget {
 class _WrittenTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width * 0.5;
+    final width = MediaQuery.of(context).size.width * 0.5;
 
     return SizedBox(
       width: width,
