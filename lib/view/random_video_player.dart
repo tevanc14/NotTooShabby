@@ -184,7 +184,7 @@ class _RandomVideoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonSize = MediaQuery.of(context).size.width * 0.5;
+    final buttonSize = 200.0;
 
     return SizedBox(
       height: buttonSize,
@@ -202,11 +202,11 @@ class _RandomVideoButton extends StatelessWidget {
 class _WrittenTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width * 0.5;
+    final titleSize = 200.0;
 
     return SizedBox(
-      width: width,
-      height: width * 0.8,
+      width: titleSize,
+      height: titleSize * 0.8,
       child: Image.asset(
         'assets/written_title.png',
       ),

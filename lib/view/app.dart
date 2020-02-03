@@ -5,7 +5,7 @@ class NotTooShabbyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     precacheImages(context);
-    final Color background = Color(0xFF181818);
+    final background = Color(0xFF181818);
 
     return MaterialApp(
       theme: ThemeData(
@@ -21,7 +21,7 @@ class NotTooShabbyApp extends StatelessWidget {
   }
 
   void precacheImages(BuildContext context) {
-    final List<String> imagePaths = [
+    final imagePaths = [
       'assets/background.png',
       'assets/written_title.png',
       'assets/play_button.png'
@@ -29,9 +29,7 @@ class NotTooShabbyApp extends StatelessWidget {
 
     imagePaths.forEach((String imagePath) {
       precacheImage(
-        AssetImage(
-          imagePath,
-        ),
+        AssetImage(imagePath),
         context,
       );
     });
