@@ -1,12 +1,11 @@
 import 'dart:math';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_youtube/flutter_youtube.dart';
 import 'package:not_too_shabby/model/watch_history.dart';
 import 'package:not_too_shabby/model/video_detail.dart';
 import 'package:not_too_shabby/model/youtube_api_key.dart';
 import 'package:not_too_shabby/service/storage_interactions.dart';
+import 'package:not_too_shabby/service/video_interactions.dart';
 import 'package:not_too_shabby/view/info.dart';
 import 'package:not_too_shabby/view/watch_history_screen.dart';
 
@@ -63,7 +62,7 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
+                image: const AssetImage(
                   'assets/background.png',
                 ),
                 fit: BoxFit.cover,
@@ -104,31 +103,21 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
             callback: errorButtonFunction,
           );
         } else {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         }
       },
     );
   }
 
-  void _randomVideo() async {
+  Future<void> _randomVideo() async {
     final int randomIndex = Random().nextInt(videoDetails.length);
-    final VideoDetail randomVideoDetails = videoDetails[randomIndex];
+    final VideoDetail randomVideoDetail = videoDetails[randomIndex];
     final YoutubeApiKey youtubeApiKey = await Storage.youtubeApiKey(context);
 
-    FlutterYoutube.playYoutubeVideoById(
-      apiKey: youtubeApiKey.value,
-      videoId: randomVideoDetails.videoId,
-      autoPlay: true,
-      fullScreen: true,
-    );
-
-    watchHistory.addToWatchHistory(randomVideoDetails);
-
-    FirebaseAnalytics().logEvent(
-      name: 'random_video_play',
-      parameters: {
-        'videoId': randomVideoDetails.videoId,
-      },
+    Video.play(
+      watchHistory,
+      randomVideoDetail,
+      youtubeApiKey,
     );
   }
 
@@ -137,10 +126,10 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => WatchHistoryScreen(
-                watchHistory,
-                videoDetails,
-              ),
+          builder: (BuildContext context) => WatchHistoryScreen(
+            watchHistory,
+            videoDetails,
+          ),
         ),
       );
     }
@@ -150,7 +139,7 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => Info(),
+        builder: (BuildContext context) => Info(),
       ),
     );
   }
@@ -162,12 +151,12 @@ class _RandomVideoPlayerState extends State<RandomVideoPlayer> {
   }
 
   bool _widerThanTall() {
-    MediaQueryData queryData = MediaQuery.of(context);
+    final MediaQueryData queryData = MediaQuery.of(context);
     return queryData.size.width > queryData.size.height;
   }
 
   Widget _layoutPlayer() {
-    final children = <Widget>[
+    final List<Widget> children = <Widget>[
       _randomVideoButton(context),
       _WrittenTitle(),
     ];
@@ -202,7 +191,7 @@ class _RandomVideoButton extends StatelessWidget {
       height: buttonSize,
       width: buttonSize,
       child: InkWell(
-        onTap: this.callback,
+        onTap: callback,
         child: Image.asset(
           'assets/play_button.png',
         ),

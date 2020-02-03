@@ -5,7 +5,7 @@ class WatchHistory {
   Map<String, VideoWatchHistory> watchHistoryMap;
 
   WatchHistory() {
-    watchHistoryMap = Map();
+    watchHistoryMap = {};
   }
 
   WatchHistory.fromJson(Map<String, dynamic> json) {
