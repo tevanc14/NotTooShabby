@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.19.0] - 2020-02-04
+
+Added
+
+- `Runner.entitlements` to avoid Apple issue ITMS-90078
+
 ## [0.18.0] - 2020-02-03
 
 Changed
